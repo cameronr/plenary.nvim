@@ -229,6 +229,7 @@ mod.run = function(file)
     print(color_string("red", msg))
     print(HEADER)
     if is_headless then
+      print "DEBUGPRINT[9]: busted.lua:232 (before return vim.cmd 2cq)"
       return vim.cmd "2cq"
     else
       return
@@ -241,6 +242,7 @@ mod.run = function(file)
     -- If nothing runs (empty file without top level describe)
     if not results.pass then
       if is_headless then
+        print "DEBUGPRINT[8]: busted.lua:244 (before return vim.cmd 0cq)"
         return vim.cmd "0cq"
       else
         return
@@ -252,16 +254,19 @@ mod.run = function(file)
     if #results.errs ~= 0 then
       print("We had an unexpected error: ", vim.inspect(results.errs), vim.inspect(results))
       if is_headless then
+        print "DEBUGPRINT[7]: busted.lua:255 (before return vim.cmd 2cq)"
         return vim.cmd "2cq"
       end
     elseif #results.fail > 0 then
       print "Tests Failed. Exit: 1"
 
       if is_headless then
+        print "DEBUGPRINT[6]: busted.lua:261 (before return vim.cmd 1cq)"
         return vim.cmd "1cq"
       end
     else
       if is_headless then
+        print "DEBUGPRINT[5]: busted.lua:265 (before return vim.cmd 0cq)"
         return vim.cmd "0cq"
       end
     end

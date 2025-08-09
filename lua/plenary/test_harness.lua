@@ -142,6 +142,7 @@ local function test_paths(paths, opts)
   log.debug "Running..."
   for i, j in ipairs(jobs) do
     outputter(res.bufnr, "Scheduling: " .. j.nvim_busted_path)
+    log.debug("Scheduling job: " .. i .. ": " .. j.nvim_busted_path)
     j:start()
     if opts.sequential then
       log.debug("... Sequential wait for job number", i)
@@ -154,6 +155,7 @@ local function test_paths(paths, opts)
       else
         log.debug("... Completed job number", i, j.code, j.signal)
         failure = failure or j.code ~= 0 or j.signal ~= 0
+        log.debug("job " .. i .. " failures: ", failure, "\n")
       end
       if failure and not opts.keep_going then
         break
@@ -163,6 +165,7 @@ local function test_paths(paths, opts)
 
   -- TODO: Probably want to let people know when we've completed everything.
   if not headless then
+    print "DEBUGPRINT[10]: test_harness.lua:166 not headless, just return"
     return
   end
 
@@ -180,9 +183,13 @@ local function test_paths(paths, opts)
 
   if headless then
     if failure then
+      print "#### headless failure, exiting with code 1"
+      log.debug "#### headless failure, exiting with code 1"
+      print "DEBUGPRINT[3]: test_harness.lua:185 (before return vim.cmd 1cq)"
       return vim.cmd "1cq"
     end
 
+    print "DEBUGPRINT[4]: test_harness.lua:189 (before return vim.cmd 0cq)"
     return vim.cmd "0cq"
   end
 end
